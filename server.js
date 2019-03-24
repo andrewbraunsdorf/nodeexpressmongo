@@ -30,3 +30,18 @@ MongoClient.connect(url, (err, database) => {
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+
+// add a document to the DB collection recording the click event
+app.post('/clicked', (req, res) => {
+  const click = {clickTime: new Date()};
+  console.log(click);
+  console.log(db);
+
+  db.collection('clicks').save(click, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log('click added to db');
+    res.sendStatus(201);
+  });
+});
